@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthProvider";
 import Chat from "./pages/Chat/Chat";
 import Register from "./pages/Register";
-import NotFound from "./components/ExceptionsPages/NotFound";
+import NotFound from "./pages/ExceptionsPages/NotFound";
 
 function App(): JSX.Element {
   return (
