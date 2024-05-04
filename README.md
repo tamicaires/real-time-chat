@@ -102,6 +102,6 @@ Este projeto está licenciado sob a [Licença MIT](LICENSE).
 
 ---
 
-**Desenvolvido por [Seu Nome](link_para_perfil_developer)**
+**Desenvolvido por Tamires Caires [(link_para_perfil_developer)**
 
 ---
