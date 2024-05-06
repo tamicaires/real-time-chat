@@ -47,10 +47,10 @@ export default function ChatGroupCard({
               {group.name}
             </h3>{" "}
             {group.isMyGroup ? (
-              <div className="flex gap-2 text-[13px] text-gray-400 pt-2 ">
-                <span className="font-semibold">
+              <div className="marker:flex gap-2 text-[13px] text-gray-400 pt-2 ">
+                <span className="truncate font-semibold">
                   {group.sender ? `${group.sender}:` : "Nenhuma Mensagem"}
-                </span>
+                </span>{" "}
                 <span className="truncate">{group.lastMessage ?? ""}</span>{" "}
               </div>
             ) : (

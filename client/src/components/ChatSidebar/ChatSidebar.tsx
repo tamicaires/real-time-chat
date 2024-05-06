@@ -9,7 +9,7 @@ import { message } from "antd";
 import Header from "./components/Header";
 import Logout from "./components/Logout";
 import CreateChatGroups from "../CreateChatGroup/CreateChatGroup";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useActiveFilterChatStore } from "../../store/filterChatBar/filterChatBar";
 import { handleChangeChatGroups } from "../../utils/utils";
 
@@ -43,7 +43,7 @@ export default function ChatSidebar() {
       );
     });
 
-    return () => {
+     return () => {
       socket.off("chat-room");
     };
   }, [socket]);
@@ -68,7 +68,9 @@ export default function ChatSidebar() {
         <div className="flex flex-col ">
           <main>
             {filteredChatGroups.length === 0 ? (
-              <div className="text-center">Nenhum grupo disponivel</div>
+              <div className="text-center text-gray-300 text-sm">
+                Nenhum grupo disponivel
+              </div>
             ) : (
               filteredChatGroups.map((group, index) => (
                 <ChatGroupCard

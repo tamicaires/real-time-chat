@@ -1,7 +1,6 @@
 import { format } from "date-fns";
 import avatar2 from "../../../assets/avatars/avatar2.svg";
 import avatar1 from "../../../assets/avatars/avatar1.svg";
-import { useThemeStore } from "../../../store/themeSettings/themeSettings";
 
 interface ConversationBubbleProps {
   fromMe: boolean;
@@ -16,7 +15,6 @@ export default function ConversationBubble({
   username,
   sendAt,
 }: ConversationBubbleProps) {
-  const { currentColor } = useThemeStore();
   const formattedDate = format(sendAt, "HH:mm");
 
   return (
@@ -55,7 +53,9 @@ export default function ConversationBubble({
                 {formattedDate}
               </div>
             </div>
-            <div className={`flex gap-4 text-gray-200 bg-${currentColor}-700 px-6 py-3 rounded rounded-l-3xl rounded-tr-3xl rounded-br-none`}>
+            <div
+              className={`flex gap-4 text-gray-200 bg-violet-700 px-6 py-3 rounded rounded-l-3xl rounded-tr-3xl rounded-br-none`}
+            >
               <span>{message}</span>
             </div>
           </div>

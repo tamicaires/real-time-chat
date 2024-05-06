@@ -22,7 +22,7 @@ export const messageService = {
       data: chatData,
       headers: { Authorization: `Bearer ${token}` },
     };
-    console.log("service", chatData);
+
     return handleRequest(config);
   },
   getAllMessages: async () => {
@@ -40,7 +40,7 @@ export const messageService = {
       url: `/message/${groupId}`,
       headers: { Authorization: `Bearer ${token}` },
     };
-    console.log("service", handleRequest(config));
+  
     return handleRequest(config);
   },
 };
