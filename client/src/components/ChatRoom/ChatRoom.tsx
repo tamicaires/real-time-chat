@@ -13,16 +13,18 @@ import { getUserLocalStorage } from "../../context/AuthProvider/util";
 import RoomHeader from "./components/RoomHeader";
 import { ChatGroup } from "../../interface/chat-group.interface";
 import { chatService } from "../../services/ChatService/chatService";
+import { useDropDownStore } from "../../store/dropDown/dropDown";
 
 export default function ChatRoom() {
   const { currentChatGroup, setCurrentChatGroup } = useCurrentChatGroupStore();
+  const { activeField, setActiveField } = useDropDownStore();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [selectedId, setSelectedId] = useState("");
-  const user = getUserLocalStorage();
+  const [username, setUsername] = useState("");
 
   const [socket] = useState(clientSocket());
 
-  const [username, setUsername] = useState("");
+  const user = getUserLocalStorage();
 
   useEffect(() => {
     if (user) {
@@ -107,10 +109,9 @@ export default function ChatRoom() {
     try {
       await chatService.addUserToChat(selectedId);
 
-      const updatedGroup = await chatService.getChatGroup(selectedId);
+      const updatedGroup = await chatService.getUpdatedGroup(selectedId);
       console.log("updated grupo", updatedGroup);
       message.success("Bem-vindo ao grupo!");
-      console.log("handlejoin", selectedId);
     } catch (error) {
       message.error(
         "Não foi possivel entrar no grupo, tente novamente mais tarde!"
@@ -119,51 +120,70 @@ export default function ChatRoom() {
     }
   };
 
+  const handleLeaveChat = async () => {
+    try {
+      await chatService.leaveChatGroup(selectedId);
+      await chatService.getUpdatedGroup(selectedId);
+      setActiveField(!activeField);
+      setSelectedId("");
+    } catch (error) {
+      console.log("Error on leave group:", error);
+    }
+  };
+
   return (
     <div className="max-w-full flex flex-col bg-main-bg  h-screen b">
       <div className="ml-7">
-        <RoomHeader />
+        <RoomHeader onLeaveChat={handleLeaveChat} />
       </div>
 
-      {currentChatGroup?.isMyGroup ? (
-        <div className="flex flex-col bg-main-bg flex-grow overflow-y-auto">
-          {messages.length === 0 ? (
-            <div className="text-center text-gray-500 mt-4">
-              Nenhuma mensagem
-            </div>
-          ) : (
-            messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  message.sender === username ? "justify-end" : "justify-start"
-                }`}
-              >
-                <ConversationBubble
-                  message={message.text}
-                  username={message.sender}
-                  fromMe={message.sender === username}
-                  sendAt={message.createdAt}
-                />
+      {currentChatGroup ? (
+        currentChatGroup.isMyGroup ? (
+          <div className="flex flex-col bg-main-bg flex-grow overflow-y-auto">
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500 mt-4">
+                Nenhuma mensagem
               </div>
-            ))
-          )}
-          <div ref={dummy}></div>
-        </div>
-      ) : (
-        <div className="flex flex-grow justify-center items-center">
-          <div className="flex flex-col items-center gap-3 pl-6">
-            <span className="text-white text-lg font-bold">
-              Você não faz parte deste grupo.
-            </span>
-
-            <button
-              onClick={handleJoinChat}
-              className="bg-violet-700 hover:bg-violet-800 text-gray-200 text-sm text-center px-4 py-1 mb-8 rounded-md uppercase font-semibold"
-            >
-              Entrar no grupo
-            </button>
+            ) : (
+              messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`flex ${
+                    message.sender === username
+                      ? "justify-end"
+                      : "justify-start"
+                  }`}
+                >
+                  <ConversationBubble
+                    message={message.text}
+                    username={message.sender}
+                    fromMe={message.sender === username}
+                    sendAt={message.createdAt}
+                  />
+                </div>
+              ))
+            )}
+            <div ref={dummy}></div>
           </div>
+        ) : (
+          <div className="flex flex-grow justify-center items-center">
+            <div className="flex flex-col items-center gap-3 pl-6">
+              <span className="text-white text-lg font-bold">
+                Você não faz parte deste grupo.
+              </span>
+
+              <button
+                onClick={handleJoinChat}
+                className="bg-violet-700 hover:bg-violet-800 text-gray-200 text-sm text-center px-4 py-1 mb-8 rounded-md uppercase font-semibold"
+              >
+                Entrar no grupo
+              </button>
+            </div>
+          </div>
+        )
+      ) : (
+        <div className="text-center text-gray-500 mt-4">
+          Não tem grupo selecionado
         </div>
       )}
 

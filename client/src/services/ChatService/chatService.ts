@@ -29,6 +29,15 @@ export const chatService = {
 
     return handleRequest(config);
   },
+  leaveChatGroup: async (groupId: string) => {
+    const config: AxiosRequestConfig = {
+      method: "DELETE",
+      url: `/chat-groups/${groupId}/leave-chat`,
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    return handleRequest(config);
+  },
   createChat: async (chatData: CreateChatGroup) => {
     const config: AxiosRequestConfig = {
       method: "POST",
@@ -58,7 +67,7 @@ export const chatService = {
 
     return handleRequest(config);
   },
-  getChatGroup: async (groupId: string) => {
+  getUpdatedGroup: async (groupId: string) => {
     const config: AxiosRequestConfig = {
       method: "GET",
       url: `/chat-groups/${groupId}`,

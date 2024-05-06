@@ -2,9 +2,10 @@ import { useDropDownStore } from "../../store/dropDown/dropDown";
 
 interface ChildrenProps {
   text: string;
+  onLeaveChat: () => void;
 }
 
-export function Children({ text }: ChildrenProps) {
+export function Children({ text, onLeaveChat }: ChildrenProps) {
   const { setActiveField } = useDropDownStore();
   return (
     <div className="relative ">
@@ -13,7 +14,10 @@ export function Children({ text }: ChildrenProps) {
           {text}
         </button>
         <div className="flex gap-1 pt-1 border-t border-zinc-700">
-          <button className="text-gray-300 text-sm shadow-md p-2 px-4 rounded-lg bg-red-700 hover:bg-red-600 block w-full text-center">
+          <button
+            onClick={onLeaveChat}
+            className="text-gray-300 text-sm shadow-md p-2 px-4 rounded-lg bg-red-700 hover:bg-red-600 block w-full text-center"
+          >
             Sim
           </button>
           <button

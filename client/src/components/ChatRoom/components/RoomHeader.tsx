@@ -9,7 +9,11 @@ import { Children } from "../../DropDown/Children";
 import { useDropDownStore } from "../../../store/dropDown/dropDown";
 import { useModalStore } from "../../../store/showModal/showModal";
 
-export default function RoomHeader() {
+interface RoomHeaderProps {
+  onLeaveChat: () => void;
+}
+
+export default function RoomHeader({onLeaveChat}: RoomHeaderProps) {
   const { currentChatGroup } = useCurrentChatGroupStore();
   const [activeDropDown, setActiveDropDown] = useState(false);
 
@@ -40,7 +44,7 @@ export default function RoomHeader() {
               onClick={() => setActiveField(!activeField)}
               isActive={activeField}
             >
-              <Children text="Certeza que deseja sair?" />
+              <Children onLeaveChat={onLeaveChat} text="Certeza que deseja sair?" />
             </Field>
           </div>
         </Container>
