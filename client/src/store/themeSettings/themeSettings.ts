@@ -6,6 +6,6 @@ interface ThemeState {
 }
 
 export const useThemeStore = create<ThemeState>((set) => ({
-  currentColor: "violet",
+  currentColor: "#1fc15a",
   setCurrentColor: (color) => set({ currentColor: color }),
 }));
