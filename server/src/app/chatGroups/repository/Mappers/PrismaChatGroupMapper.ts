@@ -1,5 +1,6 @@
 import { ChatGroup as ChatGroupRaw } from "@prisma/client";
 import { ChatGroup } from "../../entities/ChatGroup";
+import { ChatMessage } from "../../../interfaces/chat-message.interface";
 
 export class PrismaChatGroupMapper {
   static toPrisma({
@@ -25,4 +26,5 @@ export class PrismaChatGroupMapper {
       id
     );
   }
+
 }

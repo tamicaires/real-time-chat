@@ -78,37 +78,9 @@ export class ChatGroupController {
       ...chatGroup,
       isMyGroup: isMyGroup,
     };
-     
+
     io.emit("chat-room", chatGroupWithInfo);
     return res.json(ChatGroupViewModel.toHttp(chatGroupWithInfo));
-  }
-
-  async getLastChatMessages(req: Request, res: Response) {
-    const userId = req.userId;
-    console.log(userId);
-    const lastMessages = await prisma.chatGroup.findMany({
-      where: {
-        UserChatGroup: {
-          some: {
-            userId,
-          },
-        },
-      },
-      select: {
-        messages: {
-          select: {
-            sender: true,
-            text: true,
-          },
-          orderBy: { createdAt: "desc" },
-          take: 1,
-        },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 1,
-    });
-    console.log(lastMessages);
-    return res.json(lastMessages);
   }
 
   async listChatGroups(req: Request, res: Response) {

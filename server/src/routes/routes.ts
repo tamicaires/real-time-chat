@@ -2,16 +2,15 @@ import { Request, Response, Router } from "express";
 import { UserController } from "../controllers/UserController";
 import { AuthController } from "../controllers/AuthController";
 import { AuthMiddleware } from "../middlewares/auth";
-import { MessageController } from "../controllers/MessageController";
-
 import { UserChatGroupController } from "../controllers/UserChatGroup";
-import { ChatGroupController } from "../chatGroups/controllers/chatGroup.controller";
+import { ChatGroupController } from "../app/chatGroups/controllers/chatGroup.controller";
+import { MessageController } from "../app/messages/controllers/message.controller";
 
 const userController = new UserController();
 const authController = new AuthController();
 const chatGroupController = new ChatGroupController();
-const userChatGroupController = new UserChatGroupController();
 const messageController = new MessageController();
+const userChatGroupController = new UserChatGroupController();
 
 export const router = Router();
 
@@ -40,8 +39,12 @@ router.delete("/chat-groups/:groupId/leave-chat", AuthMiddleware, userChatGroupC
 router.get("/user-chat-groups", AuthMiddleware, userChatGroupController.getMyChats);
 
 // Rotas para mensagens
-router.post("/message", AuthMiddleware, messageController.create);
-router.get("/message/:groupId", AuthMiddleware, messageController.listMessages);
+router.post("/message", AuthMiddleware, async (req: Request, res: Response) => {
+  await messageController.create(req, res);
+});
+router.get("/message/:groupId", AuthMiddleware, async (req: Request, res: Response) => {
+  await messageController.listMessages(req, res);
+});
 
 // Rota padrão para lidar com URLs não encontradas
 router.all("*", (req, res) =>

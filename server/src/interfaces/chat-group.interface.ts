@@ -1,9 +1,12 @@
 import { ChatMessage } from "./chat-message.interface";
 
-export interface ChatGroup {
+export interface ChatGroupsWithMessages {
   id: string;
   name: string;
-  description?: string;
+  description: string | null;
   createdAt: Date;
   messages: ChatMessage[];
+  UserChatGroup: {
+    userId: string;
+}[];
 }
