@@ -1,10 +1,11 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { UserController } from "../controllers/UserController";
 import { AuthController } from "../controllers/AuthController";
 import { AuthMiddleware } from "../middlewares/auth";
 import { MessageController } from "../controllers/MessageController";
-import { ChatGroupController } from "../controllers/ChatGroupController";
+
 import { UserChatGroupController } from "../controllers/UserChatGroup";
+import { ChatGroupController } from "../chatGroups/controllers/chatGroup.controller";
 
 const userController = new UserController();
 const authController = new AuthController();
@@ -20,14 +21,23 @@ router.get("/users", AuthMiddleware, userController.listUsers);
 router.post("/login", authController.authenticate);
 
 // Rotas para chat grupos
-router.post("/chat-groups", AuthMiddleware, chatGroupController.create);
-router.put("/chat-groups/:groupId", AuthMiddleware, chatGroupController.updateChatGroup);
-router.get("/chat-groups/:groupId", AuthMiddleware, chatGroupController.getChatGroup);
-router.get("/chat-groups", AuthMiddleware, chatGroupController.listChatGroups);
-router.get("/chat-groups/last-messages", AuthMiddleware, chatGroupController.getLastChatMessages);
+router.post("/chat-groups", AuthMiddleware, async (req: Request, res: Response) => {
+  await chatGroupController.create(req, res);
+});
+router.put("/chat-groups/:groupId", AuthMiddleware, async (req: Request, res: Response) => {
+  await chatGroupController.updateChatGroup(req, res);
+});
+router.get("/chat-groups/:groupId", AuthMiddleware, async (req: Request, res: Response) => {
+  await chatGroupController.getChatGroup(req, res);
+});
+router.get("/chat-groups", AuthMiddleware, async (req: Request, res: Response) => {
+  await chatGroupController.listChatGroups(req, res);
+});
 
-// Adicionar usuário a um grupo existente
+//  Rotas para lidar com relacionamento User e Chat Group
 router.post("/chat-groups/:groupId/add-user", AuthMiddleware, userChatGroupController.addUserToGroup);
+router.delete("/chat-groups/:groupId/leave-chat", AuthMiddleware, userChatGroupController.leaveChatGroup);
+router.get("/user-chat-groups", AuthMiddleware, userChatGroupController.getMyChats);
 
 // Rotas para mensagens
 router.post("/message", AuthMiddleware, messageController.create);
