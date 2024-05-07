@@ -33,7 +33,7 @@ model ChatGroup {
 }
 
 model UserChatGroup {
-  id          String    @id
+  id          String    @id @default(uuid())
   user        User      @relation(fields: [userId], references: [id])
   userId      String    
   chatGroup   ChatGroup @relation(fields: [chatGroupId], references: [id])

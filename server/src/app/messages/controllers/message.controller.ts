@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { io } from "../../http";
 import { CreateMessageBody } from "../dtos/createMessageBody";
 import { createMessageService } from "../factories/createMessageService";
+import { io } from "../../../http";
 
 export class MessageController {
   public messageService = createMessageService();

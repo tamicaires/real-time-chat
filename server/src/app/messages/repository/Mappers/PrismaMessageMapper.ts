@@ -7,7 +7,6 @@ export class PrismaMessageMapper {
       id: message.id,
       text: message.text,
       senderId: message.senderId,
-      fromMe: false,
       chatGroupId: message.chatGroupId,
       createdAt: message.createdAt,
     };

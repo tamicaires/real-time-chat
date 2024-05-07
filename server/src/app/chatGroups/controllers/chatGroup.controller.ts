@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { createChatGroupService } from "../factories/createChatGroupService";
 import { CreateChatGroupBody } from "../dtos/createChatGroupBody copy";
-import { io } from "../../http";
+import { io } from "../../../http";
+
 
 export class ChatGroupController {
   public chatGroupService = createChatGroupService();

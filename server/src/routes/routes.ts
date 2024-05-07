@@ -1,10 +1,11 @@
 import { Request, Response, Router } from "express";
-import { UserController } from "../controllers/UserController";
+
 import { AuthController } from "../controllers/AuthController";
 import { AuthMiddleware } from "../middlewares/auth";
 import { UserChatGroupController } from "../controllers/UserChatGroup";
 import { ChatGroupController } from "../app/chatGroups/controllers/chatGroup.controller";
 import { MessageController } from "../app/messages/controllers/message.controller";
+import { UserController } from "../app/users/controllers/user.controller";
 
 const userController = new UserController();
 const authController = new AuthController();
@@ -15,8 +16,12 @@ const userChatGroupController = new UserChatGroupController();
 export const router = Router();
 
 //Rotas para usuário
-router.post("/create", userController.create);
-router.get("/users", AuthMiddleware, userController.listUsers);
+router.post("/create", async (req: Request, res: Response) => {
+  await userController.create(req, res);
+});
+router.get("/users", AuthMiddleware, async (req: Request, res: Response) => {
+  await userController.listUsers(req, res);
+});
 router.post("/login", authController.authenticate);
 
 // Rotas para chat grupos
